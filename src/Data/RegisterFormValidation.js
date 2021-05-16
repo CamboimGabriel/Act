@@ -6,7 +6,9 @@ const RegSchema = Yup.object().shape({
     .required("Necessário nome da criança"),
   criancaIdade: Yup.string().required("Necessário idade da criança"),
   criancaNascimento: Yup.string().required("Necessário nascimento da criança"),
-  cuidadorNome: Yup.string().required("Necessário nome do cuidador(a)"),
+  cuidadorNome: Yup.string()
+    .matches(" ", "Necessário sobrenome do cuidador")
+    .required("Necessário nome do cuidador"),
   cuidadorIdade: Yup.string().required("Necessário idade do cuidador(a)"),
   cuidadorNascimento: Yup.string().required(
     "Necessário nascimento do cuidador(a)"

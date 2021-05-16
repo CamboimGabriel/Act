@@ -90,7 +90,15 @@ const FamilyScreen = ({ route, navigation }) => {
       pergunta: "Sexo",
       resposta: family.crianca.sexo,
     },
-    { pergunta: "Idade", resposta: family.crianca.idade },
+    {
+      pergunta: "Idade",
+      resposta:
+        family.crianca.idade < 1
+          ? family.crianca.idade * 12 > 1
+            ? family.crianca.idade * 12 + " Meses"
+            : family.crianca.idade * 12 + " Mês"
+          : family.crianca.idade,
+    },
     { pergunta: "Nascimento", resposta: family.crianca.nascimento },
     {
       pergunta: "Qual a sua cor da pele/etnia da sua criança",

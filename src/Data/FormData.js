@@ -15,6 +15,7 @@ const Form = ({ submit, family, goTo }) => {
   const [state, setState] = useState(false);
   const [state2, setState2] = useState(false);
   const [page, setPage] = useState(1);
+  const [pageError, setPageError] = useState(false);
   const scrollView = useRef(null);
   const array = [1];
 
@@ -175,10 +176,11 @@ const Form = ({ submit, family, goTo }) => {
         {({
           handleSubmit,
           values,
+          handleChange,
 
           errors,
           touched,
-
+          setFieldTouched,
           setFieldValue,
           validateField,
         }) => (
@@ -198,6 +200,7 @@ const Form = ({ submit, family, goTo }) => {
             {page === 1 && (
               <>
                 <Select
+                  name="participouOutro"
                   value={values.participouOutro}
                   touched={touched.participouOutro}
                   style={styles.box}
@@ -505,7 +508,7 @@ const Form = ({ submit, family, goTo }) => {
                     values.ABEP_13 = selected;
                     //validateField("ABEP_13");
                   }}
-                  title="Qual é o grau de instrução do chefe da família ?"
+                  title="Qual é o grau de instrução do chefe da família (pessoa de maior renda)?"
                 />
                 <Select
                   value={values.ABEP_14}
@@ -617,7 +620,7 @@ const Form = ({ submit, family, goTo }) => {
                     values.MICS_4 = selected;
                     //validateField("MICS_4");
                   }}
-                  title={`...Levou o(a) ${family.crianca.nome} para fora de casa,no quintal,jardim ou cercado?`}
+                  title={`...Levou o(a) ${family.crianca.nome} para fora de casa, no quintal, jardim ou cercado?`}
                 />
 
                 <Select
@@ -1133,7 +1136,7 @@ const Form = ({ submit, family, goTo }) => {
                   left="A maioria das vezes"
                   errors={errors.ACT_EP11}
                   touched={touched.ACT_EP11}
-                  title="Quando meu filho ou filha faz algo que eu não gosto, insulto meu filho ou filha e digo coisas horríveis ou xingo"
+                  title="Quando meu filho ou filha faz algo que eu não gosto, insulto meu filho ou filha e digo coisas horríveis ou xingo..."
                   data={[
                     { id: 1, key: 1, checked: "unchecked" },
                     { id: 2, key: 2, checked: "unchecked" },
@@ -1436,7 +1439,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1469,7 +1472,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1502,7 +1505,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1535,7 +1538,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1569,7 +1572,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1602,7 +1605,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1635,7 +1638,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1668,7 +1671,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1701,7 +1704,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -1735,7 +1738,7 @@ const Form = ({ submit, family, goTo }) => {
                       checked: false,
                     },
                     {
-                      key: "Um pouco(Algum tempo)",
+                      key: "Um pouco (algum tempo)",
                       id: 1,
                       checked: false,
                     },
@@ -3447,7 +3450,7 @@ const Form = ({ submit, family, goTo }) => {
                     },
                     {
                       key: "Prefiro não responder",
-                      id: 1,
+                      id: 2,
                       checked: false,
                     },
                   ]}
@@ -3491,7 +3494,7 @@ const Form = ({ submit, family, goTo }) => {
                         { id: 0, key: "Abuso fisico", checked: "unchecked" },
                         {
                           id: 1,
-                          key: "Abuso psicológico (ex:humilhou)",
+                          key: "Abuso psicológico (ex: humilhou)",
                           checked: "unchecked",
                         },
                         { id: 2, key: "Abuso sexual", checked: "unchecked" },
@@ -3611,22 +3614,7 @@ const Form = ({ submit, family, goTo }) => {
                     Necessário preencher todos os campos
                   </Text>
                 ) : null}
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    let it;
 
-                    array.forEach((item, index) => {
-                      if (item === page) {
-                        it = array[index - 1];
-                      }
-                    });
-
-                    setPage(it);
-                  }}
-                >
-                  <Text style={styles.textbutton}>Voltar página</Text>
-                </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
@@ -3639,23 +3627,17 @@ const Form = ({ submit, family, goTo }) => {
               </>
             ) : (
               <>
-                {page > 1 && (
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      let it;
-
-                      array.forEach((item, index) => {
-                        if (item === page) {
-                          it = array[index - 1];
-                        }
-                      });
-                      console.log(array, it);
-                      setPage(it);
+                {pageError && (
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "red",
+                      alignSelf: "center",
+                      marginTop: 10,
                     }}
                   >
-                    <Text style={styles.textbutton}>Voltar página</Text>
-                  </TouchableOpacity>
+                    Responda todas as questões da página para prosseguir
+                  </Text>
                 )}
                 {page < 10 && (
                   <TouchableOpacity
@@ -3663,16 +3645,328 @@ const Form = ({ submit, family, goTo }) => {
                     onPress={() => {
                       let it;
 
-                      array.forEach((item, index) => {
-                        if (item === page) {
-                          it = array[index + 1];
+                      switch (page) {
+                        case 1: {
+                          if (
+                            values.participouOutro === "" ||
+                            (values.participouOutro === "Sim" &&
+                              values.casoParticipe.length === 0)
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+
+                          break;
                         }
-                      });
-                      console.log(array, it);
-                      setPage(it);
+                        case 2: {
+                          if (
+                            values.ABEP_1 === "" ||
+                            values.ABEP_2 === "" ||
+                            values.ABEP_3 === "" ||
+                            values.ABEP_4 === "" ||
+                            values.ABEP_5 === "" ||
+                            values.ABEP_6 === "" ||
+                            values.ABEP_7 === "" ||
+                            values.ABEP_8 === "" ||
+                            values.ABEP_9 === "" ||
+                            values.ABEP_10 === "" ||
+                            values.ABEP_11 === "" ||
+                            values.ABEP_12 === "" ||
+                            values.ABEP_13 === "" ||
+                            values.ABEP_14 === "" ||
+                            values.ABEP_15 === ""
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+
+                          break;
+                        }
+                        case 3: {
+                          if (
+                            values.MICS_1 === "" ||
+                            values.MICS_2 === "" ||
+                            values.MICS_3 === "" ||
+                            values.MICS_4 === "" ||
+                            values.MICS_5 === "" ||
+                            values.MICS_6 === ""
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+
+                          break;
+                        }
+                        case 4: {
+                          if (
+                            values.PSOC_1 === "" ||
+                            values.PSOC_2 === "" ||
+                            values.PSOC_3 === "" ||
+                            values.PSOC_4 === "" ||
+                            values.PSOC_5 === "" ||
+                            values.PSOC_6 === "" ||
+                            values.PSOC_7 === "" ||
+                            values.PSOC_8 === "" ||
+                            values.PSOC_9 === "" ||
+                            values.PSOC_10 === "" ||
+                            values.PSOC_11 === "" ||
+                            values.PSOC_12 === "" ||
+                            values.PSOC_13 === "" ||
+                            values.PSOC_14 === "" ||
+                            values.PSOC_15 === "" ||
+                            values.PSOC_16 === "" ||
+                            values.PSOC_17 === "" ||
+                            values.PSOC_18 === ""
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+
+                          break;
+                        }
+                        case 5: {
+                          if (
+                            values.ACT_EP2.length === 0 ||
+                            values.ACT_EP4.length === 0 ||
+                            values.ACT_EP5.length === 0 ||
+                            values.ACT_EP6.length === 0 ||
+                            values.ACT_EP7.length === 0 ||
+                            values.ACT_EP8.length === 0 ||
+                            values.ACT_EP10.length === 0 ||
+                            values.ACT_EP11.length === 0 ||
+                            values.ACT_CP1 === "" ||
+                            values.ACT_CP2 === "" ||
+                            values.ACT_CP3 === "" ||
+                            values.ACT_CP4 === "" ||
+                            values.ACT_CP5 === "" ||
+                            values.ACT_CP6 === "" ||
+                            values.ACT_CP8 === ""
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+
+                          break;
+                        }
+                        case 6: {
+                          if (
+                            values.PAFAS_1 === "" ||
+                            values.PAFAS_2 === "" ||
+                            values.PAFAS_3 === "" ||
+                            values.PAFAS_4 === "" ||
+                            values.PAFAS_5 === "" ||
+                            values.PAFAS_6 === "" ||
+                            values.PAFAS_7 === "" ||
+                            values.PAFAS_8 === "" ||
+                            values.PAFAS_9 === "" ||
+                            values.PAFAS_11 === ""
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+                          break;
+                        }
+                        case 7: {
+                          if (
+                            values.SDQ_1 === "" ||
+                            values.SDQ_2 === "" ||
+                            values.SDQ_3 === "" ||
+                            values.SDQ_4 === "" ||
+                            values.SDQ_5 === "" ||
+                            values.SDQ_6 === "" ||
+                            values.SDQ_7 === "" ||
+                            values.SDQ_8 === "" ||
+                            values.SDQ_9 === "" ||
+                            values.SDQ_10 === "" ||
+                            values.SDQ_11 === "" ||
+                            values.SDQ_12 === "" ||
+                            values.SDQ_13 === "" ||
+                            values.SDQ_14 === "" ||
+                            values.SDQ_15 === "" ||
+                            values.SDQ_16 === "" ||
+                            values.SDQ_17 === "" ||
+                            (family.crianca.idade <= 3 &&
+                            family.crianca.idade >= 2
+                              ? values["SDQ_18(2-3)"] === ""
+                              : false) ||
+                            (family.crianca.idade <= 8 &&
+                            family.crianca.idade >= 4
+                              ? values["SDQ_18(4-8)"] === ""
+                              : false) ||
+                            values.SDQ_19 === "" ||
+                            values.SDQ_20 === "" ||
+                            (family.crianca.idade <= 3 &&
+                            family.crianca.idade >= 2
+                              ? values["SDQ_21(2-3)"] === ""
+                              : false) ||
+                            (family.crianca.idade <= 8 &&
+                            family.crianca.idade >= 4
+                              ? values["SDQ_21(4-8)"] === ""
+                              : false) ||
+                            (family.crianca.idade <= 3 &&
+                            family.crianca.idade >= 2
+                              ? values["SDQ_22(2-3)"] === ""
+                              : false) ||
+                            (family.crianca.idade <= 8 &&
+                            family.crianca.idade >= 4
+                              ? values["SDQ_22(4-8)"] === ""
+                              : false) ||
+                            values.SDQ_23 === "" ||
+                            values.SDQ_24 === "" ||
+                            values.SDQ_25 === ""
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+                          break;
+                        }
+                        case 8: {
+                          if (
+                            values.EPVA_3 === "" ||
+                            values.EPVA_4 === "" ||
+                            values.EPVA_8 === "" ||
+                            values.EPVA_10 === "" ||
+                            values.EPVA_12 === "" ||
+                            values.EPVA_14 === "" ||
+                            values.EPVA_15 === "" ||
+                            values.EPVA_16 === "" ||
+                            values.EPVA_18 === "" ||
+                            values.EPVA_20 === "" ||
+                            values.EPVA_21 === "" ||
+                            values.EPVA_23 === "" ||
+                            values.EPVA_24 === "" ||
+                            values.EPVA_26 === "" ||
+                            values.EPVA_28 === "" ||
+                            values.EPVA_31 === "" ||
+                            values.EPVA_32 === "" ||
+                            values.EPVA_34 === "" ||
+                            values.EPVA_36 === "" ||
+                            values.EPVA_38 === "" ||
+                            values.EPVA_40 === "" ||
+                            values.EPVA_42 === ""
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+
+                          break;
+                        }
+                        case 9: {
+                          if (
+                            values.VI_1 === "" ||
+                            (values.VI_1 === "Sim" &&
+                              values.VI_2.length === 0) ||
+                            values.VI_3.length === 0 ||
+                            values.VI_4.length === 0
+                          )
+                            setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+                          break;
+                        }
+
+                        case 10: {
+                          if (values.ACT === "") setPageError(true);
+                          else {
+                            setPageError(false);
+
+                            array.forEach((item, index) => {
+                              if (item === page) {
+                                it = array[index + 1];
+                              }
+                            });
+
+                            setPage(it);
+                          }
+                          break;
+                        }
+                        default:
+                          break;
+                      }
                     }}
                   >
-                    <Text style={styles.textbutton}>Pŕoxima página</Text>
+                    <Text style={styles.textbutton}>Próxima página</Text>
                   </TouchableOpacity>
                 )}
               </>
