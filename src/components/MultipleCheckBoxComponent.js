@@ -8,15 +8,7 @@ import {
 } from "react-native";
 import { Checkbox } from "react-native-paper";
 
-const MultipleCheckBox = ({
-  title,
-  data,
-  style,
-  value,
-  onSelectionChange,
-  errors,
-  touched,
-}) => {
+const MultipleCheckBox = ({ title, data, style, value, onSelectionChange }) => {
   const [state, setState] = useState({ checkboxes: data });
 
   const onchecked = (id) => {
@@ -25,12 +17,8 @@ const MultipleCheckBox = ({
     values[index].checked =
       values[index].checked === "checked" ? "unchecked" : "checked";
 
-    setState({ checkboxes: values });
-  };
-
-  const getSelectedValues = () => {
-    const keys = state.checkboxes.map((item) => item.key);
-    const checks = state.checkboxes.map((item) => item.checked);
+    const keys = values.map((item) => item.key);
+    const checks = values.map((item) => item.checked);
     let selecteds = [];
 
     for (let i = 0; i < checks.length; i++) {
@@ -38,19 +26,20 @@ const MultipleCheckBox = ({
         selecteds.push(keys[i]);
       }
     }
+    setState({ checkboxes: values });
+
+    console.log(selecteds);
 
     onSelectionChange(selecteds);
   };
 
   useEffect(() => {
-    if (value) {
-      const checkboxes = state.checkboxes.map((item) =>
-        value.find((el) => el === item.key)
-          ? { ...item, checked: "checked" }
-          : item
-      );
-      setState({ checkboxes });
-    }
+    const checkboxes = state.checkboxes.map((item) =>
+      value.find((el) => el === item.key)
+        ? { ...item, checked: "checked" }
+        : item
+    );
+    setState({ checkboxes });
   }, []);
 
   return (
@@ -84,25 +73,12 @@ const MultipleCheckBox = ({
               status={item.checked}
               onPress={() => {
                 onchecked(item.id);
-                getSelectedValues();
               }}
             />
             <Text>{item.key}</Text>
           </TouchableOpacity>
         );
       })}
-
-      {errors && touched && (
-        <Text
-          style={{
-            fontSize: 14,
-            color: "red",
-            alignSelf: "center",
-          }}
-        >
-          {errors}
-        </Text>
-      )}
     </View>
   );
 };
